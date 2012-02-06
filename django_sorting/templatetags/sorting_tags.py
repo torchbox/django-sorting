@@ -19,7 +19,7 @@ def anchor(parser, token):
     """
     Parses a tag that's supposed to be in this format: {% anchor field title %}    
     """
-    bits = [b.strip('"\'') for b in token.split_contents()]
+    bits = token.split_contents()
     if len(bits) < 2:
         raise TemplateSyntaxError, "anchor tag takes at least 1 argument"
     try:
@@ -42,10 +42,12 @@ class SortAnchorNode(template.Node):
 
     """
     def __init__(self, field, title):
-        self.field = field
-        self.title = title
+        self.field = template.Variable(field)
+        self.title = template.Variable(title)
 
     def render(self, context):
+        field = self.field.resolve(context)
+        title = self.title.resolve(context)
         request = context['request']
         getvars = request.GET.copy()
         if 'sort' in getvars:
@@ -58,7 +60,7 @@ class SortAnchorNode(template.Node):
             del getvars['dir']
         else:
             sortdir = ''
-        if sortby == self.field:
+        if sortby == field:
             getvars['dir'] = sort_directions[sortdir]['inverse']
             icon = sort_directions[sortdir]['icon']
         else:
@@ -68,16 +70,16 @@ class SortAnchorNode(template.Node):
         else:
             urlappend = ''
         if icon:
-            title = "%s %s" % (self.title, icon)
+            title_icon = u"%s %s" % (title, icon)
         else:
-            title = self.title
+            title_icon = self.title
 
-        url = '%s?sort=%s%s' % (request.path, self.field, urlappend)
-        return '<a href="%s" title="%s">%s</a>' % (url, self.title, title)
+        url = '%s?sort=%s%s' % (request.path, field, urlappend)
+        return u'<a href="%s" title="%s">%s</a>' % (url, title, title_icon)
 
 
 def autosort(parser, token):
-    bits = [b.strip('"\'') for b in token.split_contents()]
+    bits = token.split_contents()
     if len(bits) != 2:
         raise TemplateSyntaxError, "autosort tag takes exactly one argument"
     return SortedDataNode(bits[1])
