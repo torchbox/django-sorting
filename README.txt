@@ -48,13 +48,13 @@ There are really 5 steps to setting it up with your projects.
 your objects_list:
    
     <tr>
-       <th>{% anchor first_name Name %}</th>
-       <th>{% anchor creation_date Creation %}</th>
+       <th>{% anchor "first_name" "Name" %}</th>
+       <th>{% anchor "creation_date" _("Creation") %}</th>
         ...
     </tr>
 
     The first argument is a field of the objects list, and the second 
-    one(optional) is a title that would be displayed. The previous 
+    one(optional) is a title that would be displayed, you can use django translation syntax _("") for the second argument. The previous 
     snippet will be rendered like this:
 
     <tr>
