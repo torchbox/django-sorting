@@ -54,7 +54,8 @@ your objects_list:
     </tr>
 
     The first argument is a field of the objects list, and the second 
-    one(optional) is a title that would be displayed, you can use django translation syntax _("") for the second argument. The previous 
+    one(optional) is a title that would be displayed, you can use 
+    django translation syntax _("") for the second argument. The previous 
     snippet will be rendered like this:
 
     <tr>
