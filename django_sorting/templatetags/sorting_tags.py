@@ -72,7 +72,7 @@ class SortAnchorNode(template.Node):
         if icon:
             title_icon = u"%s %s" % (title, icon)
         else:
-            title_icon = self.title
+            title_icon = title
 
         url = '%s?sort=%s%s' % (request.path, field, urlappend)
         return u'<a href="%s" title="%s">%s</a>' % (url, title, title_icon)
