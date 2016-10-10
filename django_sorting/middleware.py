@@ -1,3 +1,9 @@
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
+
+
 def get_field(self):
     try:
         get = self.GET
@@ -27,7 +33,7 @@ def get_direction(self):
     except AttributeError:
         return 'desc'
 
-class SortingMiddleware(object):
+class SortingMiddleware(MiddlewareMixin):
     """
     Inserts a variable representing the field (with direction of sorting)
     onto the request object if it exists in either **GET** or **POST** 
